@@ -29,10 +29,20 @@ pipeline {
             }
         }
         stage('Clean Up') {
-            steps {
-                script {
-                    // Remove the previous container (if exists)
-                    sh 'docker ps -a -q --filter "name=$DOCKER_IMAGE" | xargs docker rm -f'
+    steps {
+        script {
+            // Check if any container with the specified name exists and remove it
+            def containerIds = sh(script: 'docker ps -a -q --filter name=furniture-html-app', returnStdout: true).trim()
+            if (containerIds) {
+                sh "docker rm -f ${containerIds}"
+            } else {
+                echo "No containers found to clean up."
+            }
+        }
+    }
+}
+
+
                 }
             }
         }
