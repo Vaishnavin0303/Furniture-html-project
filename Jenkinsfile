@@ -29,28 +29,24 @@ pipeline {
             }
         }
         stage('Clean Up') {
-    steps {
-        script {
-            // Check if any container with the specified name exists and remove it
-            def containerIds = sh(script: 'docker ps -a -q --filter name=furniture-html-app', returnStdout: true).trim()
-            if (containerIds) {
-                sh "docker rm -f ${containerIds}"
-            } else {
-                echo "No containers found to clean up."
-            }
-        }
-    }
-}
-
-
+            steps {
+                script {
+                    // Check if any container with the specified name exists and remove it
+                    def containerIds = sh(script: 'docker ps -a -q --filter name=furniture-html-app', returnStdout: true).trim()
+                    if (containerIds) {
+                        sh "docker rm -f ${containerIds}"
+                    } else {
+                        echo "No containers found to clean up."
+                    }
                 }
             }
         }
-    }
+    }   
+
 
     post {
         always {
-            cleanWs()  // Clean the workspace after the pipeline run
+           cleanWs()  // Clean the workspace after the pipeline run
         }
     }
 }
